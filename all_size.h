@@ -11,7 +11,7 @@ struct Info
 };
 
 
-struct Info calculate_dir(const char*name_dir,int c);
+struct Info calculate_dir(const char*name_dir);
 int comparise(const char*arg1,const char*arg2);
 void additional_info(struct Info*master,struct Info*slave);
 struct Info zero_info();

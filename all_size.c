@@ -8,7 +8,7 @@
 
 #define MAX_PATH 1024
 
-struct Info calculate_dir(const char*name_dir,int c)
+struct Info calculate_dir(const char*name_dir)
 {
   struct Info info = zero_info();
   struct Info temp;
@@ -18,42 +18,43 @@ struct Info calculate_dir(const char*name_dir,int c)
   char path[MAX_PATH];
 
   dir = opendir(name_dir);
-  if(dir == NULL) 
+  if(dir == NULL)
   {
-    perror("opendir failed");
-    printf("Failed path: %s\n", name_dir);
+    perror("\nDirect do not open: ");
+    printf("\tPath to directory: %s\n",name_dir);
     return zero_info();
   }
 
   while((directory = readdir(dir)) != NULL)
   {
-    stat((*directory).d_name,&file_stat);
-    /*if(stat((*directory).d_name,&file_stat) != 0) 
-    {
-      printf("\n\t\t-------------=============stat = 0================-----------\n");
-      return zero_info();
-    }*/
+    build_path(path,name_dir,(*directory).d_name);
 
-    if((*directory).d_type == DT_REG)/*if it's file*/
+    if(lstat(path,&file_stat) != 0)
     {
-      printf("\t1 %s\n",(*directory).d_name);
+      perror("\nlstat return not zero about: ");
+      printf("\tPath to directory: %s\n",name_dir);
+      return zero_info();
+    }
+
+    if((file_stat.st_mode & S_IFMT) == S_IFREG)/*if it's file*/
+    {
+      printf("\033[44;97m%s\033[0m\n",(*directory).d_name);
       info.all_size += file_stat.st_size;
       info.file     += 1;
     }
-    else if((*directory).d_type == DT_DIR)/*if it's directory*/
+    else if((file_stat.st_mode & S_IFMT) == S_IFDIR)/*if it's directory*/
     {
       if(comparise((*directory).d_name,".") ||
          comparise((*directory).d_name,"..")) continue;
       
-      printf("\n0 %s\n",(*directory).d_name);
-      build_path(path,name_dir,(*directory).d_name);
-      temp = calculate_dir(path,++c);
+      printf("\033[41;97m%s\033[0m\n",(*directory).d_name);
+      temp = calculate_dir(path);
       additional_info(&info,&temp);
       info.dir += 1;
     }
     else {continue;}
   }
-  printf("\n\n");
+  putchar('\n');
   return info;
 }
 
