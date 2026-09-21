@@ -14,7 +14,7 @@ main()
   while((entry = readdir(dir)) != NULL)
   {
     stat((*entry).d_name,&file_stat);
-    printf("name: %s\n",(*entry).d_name);
+    printf("name: %s\tis_file: %d\tis_dir: %d\n",(*entry).d_name,S_ISREG(file_stat.st_mode),S_ISDIR(file_stat.st_mode));
     printf("\tst_dev:    %zu\n",file_stat.st_dev);
     printf("\tst_ino:    %zu\n",file_stat.st_ino);
     printf("\tst_mode:   %d\n",file_stat.st_mode);
