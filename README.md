@@ -1,7 +1,8 @@
-![run1](screenshot_1790068102)
-![run2](screenshot_1790068109)
+![](screenshot_1790068102.png)
+![](screenshot_1790068109.png)
 
-##Build
+## Build
+
 ```
 mkdir build
 
