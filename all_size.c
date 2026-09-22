@@ -38,7 +38,7 @@ struct Info calculate_dir(const char*name_dir)
 
     if((file_stat.st_mode & S_IFMT) == S_IFREG)/*if it's file*/
     {
-      printf("\033[44;97m%s\033[0m\n",(*directory).d_name);
+      printf("\033[44;97m%s\033[0m\t\tsize: \033[42;97m%zu\033[0m\n",(*directory).d_name,file_stat.st_size);
       info.all_size += file_stat.st_size;
       info.file     += 1;
     }
